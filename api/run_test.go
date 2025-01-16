@@ -177,15 +177,31 @@ func scenario() ([]byte, error) {
 	}
 
 	// Add binary file
-	bmain, err := compile()
+	fs, err := compile()
 	if err != nil {
 		return nil, err
 	}
-	w, err = archive.Create("main")
+	defer fs.Close()
+
+	fst, err := fs.Stat()
 	if err != nil {
 		return nil, err
 	}
-	if _, err := io.Copy(w, bytes.NewBuffer(bmain)); err != nil {
+	header, err := zip.FileInfoHeader(fst)
+	if err != nil {
+		return nil, err
+	}
+	header.Name = "main"
+
+	// Create archive
+	f, err := archive.CreateHeader(header)
+	if err != nil {
+		return nil, err
+	}
+
+	// Copy the file's contents into the archive.
+	_, err = io.Copy(f, fs)
+	if err != nil {
 		return nil, err
 	}
 
@@ -197,7 +213,7 @@ func scenario() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func compile() ([]byte, error) {
+func compile() (*os.File, error) {
 	cmd := exec.Command("go", "build", "-o", "main", "../examples/dynamiciac/scenario/main.go")
 	cmd.Env = append(os.Environ(), "CGO_ENABLED=0")
 	if err := cmd.Run(); err != nil {
@@ -207,7 +223,7 @@ func compile() ([]byte, error) {
 		cmd := exec.Command("rm", "main")
 		_ = cmd.Run()
 	}()
-	return os.ReadFile("main")
+	return os.Open("main")
 }
 
 func ptr[T any](t T) *T {
