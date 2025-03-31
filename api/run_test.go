@@ -181,7 +181,9 @@ func scenario() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer fs.Close()
+	defer func() {
+		_ = fs.Close()
+	}()
 
 	fst, err := fs.Stat()
 	if err != nil {
