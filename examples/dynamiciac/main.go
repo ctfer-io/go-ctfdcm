@@ -65,6 +65,9 @@ func main() {
 		ManaCost:      1,
 		ScenarioID:    f[0].ID,
 		Timeout:       ptr(600),
+		Additional: map[string]string{
+			"image": "pandatix/license-lvl1:latest",
+		},
 	}, opts...)
 	if err != nil {
 		log.Fatalf("Creating challenge: %s", err)
