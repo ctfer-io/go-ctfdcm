@@ -44,6 +44,8 @@ type (
 		Timeout       *int              `json:"timeout,omitempty"`
 		Until         *string           `json:"until,omitempty"`
 		Additional    map[string]string `json:"additional,omitempty"`
+		Min           int               `json:"min"`
+		Max           int               `json:"max"`
 	}
 )
 
@@ -81,12 +83,15 @@ type (
 
 		// CTFer.io DynamicIaC arguments
 
-		DestroyOnFlag bool    `json:"destroy_on_flag"`
-		Shared        bool    `json:"shared"`
-		ManaCost      int     `json:"mana_cost"`
-		ScenarioID    int     `json:"scenario_id"`
-		Timeout       *int    `json:"timeout,omitempty"`
-		Until         *string `json:"until,omitempty"`
+		DestroyOnFlag bool              `json:"destroy_on_flag"`
+		Shared        bool              `json:"shared"`
+		ManaCost      int               `json:"mana_cost"`
+		ScenarioID    int               `json:"scenario_id"`
+		Timeout       *int              `json:"timeout,omitempty"`
+		Until         *string           `json:"until,omitempty"`
+		Additional    map[string]string `json:"additional,omitempty"`
+		Min           int               `json:"min"`
+		Max           int               `json:"max"`
 	}
 )
 
