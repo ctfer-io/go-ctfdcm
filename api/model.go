@@ -30,12 +30,15 @@ type (
 
 		// CTFer.io DynamicIaC arguments
 
-		DestroyOnFlag bool    `json:"destroy_on_flag"`
-		Shared        bool    `json:"shared"`
-		ManaCost      int     `json:"mana_cost"`
-		ScenarioID    int     `json:"scenario_id"`
-		Until         *string `json:"until,omitempty"`
-		Timeout       *int    `json:"timeout,omitempty"`
+		DestroyOnFlag bool              `json:"destroy_on_flag"`
+		Shared        bool              `json:"shared"`
+		ManaCost      int               `json:"mana_cost"`
+		ScenarioID    int               `json:"scenario_id"`
+		Until         *string           `json:"until,omitempty"`
+		Timeout       *int              `json:"timeout,omitempty"`
+		Additional    map[string]string `json:"additional,omitempty"`
+		Min           int               `json:"min"`
+		Max           int               `json:"max"`
 	}
 
 	Instance struct {
