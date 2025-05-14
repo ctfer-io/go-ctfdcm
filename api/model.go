@@ -42,8 +42,9 @@ type (
 	}
 
 	Instance struct {
-		ConnectionInfo string `json:"connectionInfo"`
-		Until          string `json:"until"`
+		ConnectionInfo string  `json:"connectionInfo"`
+		Until          *string `json:"until,omitempty"`
+		Since          string  `json:"since"`
 	}
 
 	Mana struct {
