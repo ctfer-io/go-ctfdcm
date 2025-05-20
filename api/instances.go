@@ -28,16 +28,19 @@ func PostInstance(client *ctfd.Client, params *PostInstanceParams, opts ...ctfd.
 	return ist, nil
 }
 
-type PatchInstanceParams struct {
+type RenewInstanceParams struct {
 	ChallengeID string `json:"challengeId"`
 }
 
-func PatchInstance(client *ctfd.Client, params *PatchInstanceParams, opts ...ctfd.Option) (*Instance, error) {
-	ist := &Instance{}
-	if err := client.Patch("/plugins/ctfd-chall-manager/instance", params, ist, opts...); err != nil {
-		return nil, err
+func RenewInstance(client *ctfd.Client, params *RenewInstanceParams, opts ...ctfd.Option) (string, error) {
+	type RenewResponse struct {
+		Message string `json:"message"`
 	}
-	return ist, nil
+	resp := &RenewResponse{}
+	if err := client.Patch("/plugins/ctfd-chall-manager/instance", params, resp, opts...); err != nil {
+		return "", err
+	}
+	return resp.Message, nil
 }
 
 type DeleteInstanceParams struct {
