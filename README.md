@@ -15,4 +15,4 @@ Golang client for interacting with [CTFd](https://ctfd.io/) in the specific cont
 
 Last version tested on:
 - [CTFd 3.7.7](https://github.com/CTFd/CTFd/releases/tag/3.7.7)
-- [CTFd-Chall-Manager v0.3.1](https://github.com/ctfer-io/ctfd-chall-manager/releases/tag/v0.3.1)
+- [CTFd-Chall-Manager v0.3.4](https://github.com/ctfer-io/ctfd-chall-manager/releases/tag/v0.3.4)
