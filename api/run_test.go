@@ -1,18 +1,13 @@
 package api_test
 
 import (
-	"archive/zip"
-	"bytes"
-	"io"
-	"os"
-	"os/exec"
 	"strconv"
 	"testing"
 
 	ctfd "github.com/ctfer-io/go-ctfd/api"
 	"github.com/ctfer-io/go-ctfdcm/api"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v3"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_F_Run(t *testing.T) {
@@ -23,13 +18,9 @@ func Test_F_Run(t *testing.T) {
 	// finally pops up an instance, and in the end destroy the challenge
 	// to check the instance has been deleted.
 
-	assert := assert.New(t)
-
 	// 1a. Get nonce and session to mock a browser first
 	nonce, session, err := ctfd.GetNonceAndSession(CTFD_URL)
-	if !assert.NoError(err) {
-		return
-	}
+	require.NoError(t, err)
 	admin := ctfd.NewClient(CTFD_URL, nonce, session, "")
 
 	t.Cleanup(func() {
@@ -69,38 +60,17 @@ func Test_F_Run(t *testing.T) {
 		Start:                  "",
 		End:                    "",
 	})
-	if !assert.NoError(err) {
-		return
-	}
+	require.NoError(t, err)
 
 	// 1c. Create an API Key to avoid session/nonce+cookies dance
 	token, err := admin.PostTokens(&ctfd.PostTokensParams{
 		Expiration:  "2222-01-01",
 		Description: "Example API token.",
 	})
-	if !assert.NoError(err) {
-		return
-	}
+	require.NoError(t, err)
 	admin.SetAPIKey(*token.Value)
 
-	// 2. Add the scenario
-	scn, err := scenario()
-	if !assert.NoError(err) {
-		return
-	}
-	f, err := admin.PostFiles(&ctfd.PostFilesParams{
-		Files: []*ctfd.InputFile{
-			{
-				Name:    "scenario.zip",
-				Content: scn,
-			},
-		},
-	})
-	if !assert.NoError(err) {
-		return
-	}
-
-	// 3. Create a DynamicIaC challenge
+	// 2. Create a DynamicIaC challenge
 	ch, err := api.PostChallenges(admin, &api.PostChallengesParams{
 		// CTFd
 		Name:           "Break The License 1/2",
@@ -119,113 +89,28 @@ func Test_F_Run(t *testing.T) {
 		DestroyOnFlag: false, //
 		Shared:        false, // keep shared to instanciate
 		ManaCost:      1,
-		ScenarioID:    f[0].ID,
+		Scenario:      ref,
 		Timeout:       ptr(600),
 	})
-	if !assert.NoError(err) {
-		return
-	}
+	require.NoError(t, err)
 
-	// 4. Pop up an instance
+	// 3. Pop up an instance
 	ist, err := api.PostInstance(admin, &api.PostInstanceParams{
 		ChallengeID: strconv.Itoa(ch.ID),
 	})
-	if !assert.NoError(err) {
-		return
-	}
-	assert.NotEmpty(ist.ConnectionInfo)
+	require.NoError(t, err)
+	assert.NotEmpty(t, ist.ConnectionInfo)
 
-	// 5. Destroy the challenge
+	// 4. Destroy the challenge
 	err = admin.DeleteChallenge(ch.ID)
-	if !assert.NoError(err) {
-		return
-	}
+	require.NoError(t, err)
 
-	// 6. Check the instance has been destroyed
+	// 5. Check the instance has been destroyed
 	ist, err = api.GetInstance(admin, &api.GetInstanceParams{
 		ChallengeID: strconv.Itoa(ch.ID),
 	})
-	assert.Error(err) // challenge does not exist
-	assert.Nil(ist)   // so does its instance
-}
-
-func scenario() ([]byte, error) {
-	buf := bytes.NewBuffer([]byte{})
-	archive := zip.NewWriter(buf)
-
-	// Add Pulumi.yaml file
-	mp := map[string]any{
-		"name": "scenario",
-		"runtime": map[string]any{
-			"name": "go",
-			"options": map[string]any{
-				"binary": "./main",
-			},
-		},
-		"description": "An example scenario.",
-	}
-	b, err := yaml.Marshal(mp)
-	if err != nil {
-		return nil, err
-	}
-	w, err := archive.Create("Pulumi.yaml")
-	if err != nil {
-		return nil, err
-	}
-	if _, err := io.Copy(w, bytes.NewBuffer(b)); err != nil {
-		return nil, err
-	}
-
-	// Add binary file
-	fs, err := compile()
-	if err != nil {
-		return nil, err
-	}
-	defer func() {
-		_ = fs.Close()
-	}()
-
-	fst, err := fs.Stat()
-	if err != nil {
-		return nil, err
-	}
-	header, err := zip.FileInfoHeader(fst)
-	if err != nil {
-		return nil, err
-	}
-	header.Name = "main"
-
-	// Create archive
-	f, err := archive.CreateHeader(header)
-	if err != nil {
-		return nil, err
-	}
-
-	// Copy the file's contents into the archive.
-	_, err = io.Copy(f, fs)
-	if err != nil {
-		return nil, err
-	}
-
-	// Complete zip creation
-	if err := archive.Close(); err != nil {
-		return nil, err
-	}
-
-	return buf.Bytes(), nil
-}
-
-func compile() (*os.File, error) {
-	cmd := exec.Command("go", "build", "-o", "main", "../examples/dynamiciac/scenario/main.go")
-	cmd.Env = append(os.Environ(), "CGO_ENABLED=0")
-	if err := cmd.Run(); err != nil {
-		return nil, err
-	}
-	defer func() {
-		cmd := exec.Command("rm", "main")
-		_ = cmd.Run()
-	}()
-	return os.Open("main")
+	assert.Error(t, err) // challenge does not exist
+	assert.Nil(t, ist)   // so does its instance
 }
 
 func ptr[T any](t T) *T {

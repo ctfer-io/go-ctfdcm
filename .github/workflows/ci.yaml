@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       ctfd:
-        image: ctferio/ctfd:3.7.7-0.3.4@sha256:44a549cd47a6e5406dfa06be2b8f83c1aabddc51fe5bbf06b2cb9c9dd3130bb2
+        image: ctferio/ctfd:3.7.7-0.4.0@sha256:93496029c87ae1834b9bc8c45d728afe469432e109871dedff0b4c61d6b1422c
         ports:
           - 8000:8000
         env:
@@ -22,9 +22,16 @@ jobs:
           PLUGIN_SETTINGS_CM_MANA_TOTAL: 10
 
       chall-manager: 
-        image: ctferio/chall-manager:v0.4.2@sha256:fad0ed724caa5aff5e877be0ff5fec454aacefa582c01f2728cec1f0ce6b3272
+        image: ctferio/chall-manager:v0.5.0@sha256:a197c53b5b64b91ec4397d90c81e3a43808c1349ef5eec38bb611a074d9d11a2
         ports:
           - 8080:8080
+        env:
+          OCI_INSECURE: true
+
+      registry:
+        image: registry:3
+        ports:
+          - 5000:5000
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -59,13 +66,19 @@ jobs:
             exit 1
           fi
 
+      - name: Export registry URL
+        id: registry
+        run: |
+          name=$(docker ps --format="{{.Names}}" | grep registry)
+          echo "ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $name)" >> "$GITHUB_OUTPUT"
+
       - name: Run go tests
         run: make tests
         env:
           CTFD_URL: http://localhost:8000
+          REGISTRY: ${{ steps.registry.outputs.ip }}:5000
 
       - name: Upload coverage to Coveralls
-        if: ${{ matrix.update-coverage }}
         uses: shogo82148/actions-goveralls@e6875f831db61e6abffbd8df91a2eb6cd24b46c9 # v1.9.1
         with:
           path-to-profile: functional.out
