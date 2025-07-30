@@ -33,7 +33,7 @@ type (
 		DestroyOnFlag bool              `json:"destroy_on_flag"`
 		Shared        bool              `json:"shared"`
 		ManaCost      int               `json:"mana_cost"`
-		ScenarioID    int               `json:"scenario_id"`
+		Scenario      string            `json:"scenario"`
 		Until         *string           `json:"until,omitempty"`
 		Timeout       *int              `json:"timeout,omitempty"`
 		Additional    map[string]string `json:"additional,omitempty"`
