@@ -5,7 +5,7 @@ go 1.24.5
 require (
 	github.com/ctfer-io/chall-manager v0.5.1
 	github.com/ctfer-io/go-ctfd v0.14.0
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 )
 
 require (
