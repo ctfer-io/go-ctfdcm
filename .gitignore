@@ -1,6 +1,2 @@
-# produced by CI
-*.out
-gotest.json
-
 # produced by example code
 examples/dynamiciac/scenario/main
