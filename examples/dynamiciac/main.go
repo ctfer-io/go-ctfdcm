@@ -62,7 +62,7 @@ func main() {
 
 func pushScenario() error {
 	ctx := context.Background()
-	return scenario.EncodeOCI(ctx, ref, "../examples/dynamiciac/scenario", true, nil, nil)
+	return scenario.EncodeOCI(ctx, ref, "../examples/dynamiciac/scenario", true, "", "")
 }
 
 func ptr[T any](t T) *T {

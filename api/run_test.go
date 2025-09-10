@@ -83,6 +83,7 @@ func Test_F_Run(t *testing.T) {
 		Initial:        ptr(500),
 		Decay:          ptr(17),
 		Minimum:        ptr(50),
+		Logic:          "any",
 		State:          "visible",
 		Type:           "dynamic_iac",
 		// CTFer.io Chall-Manager plugin

@@ -29,6 +29,7 @@ type (
 		Initial        *int               `json:"initial,omitempty"`
 		Decay          *int               `json:"decay,omitempty"`
 		Minimum        *int               `json:"minimum,omitempty"`
+		Logic          string             `json:"logic"`
 		MaxAttempts    *int               `json:"max_attempts,omitempty"`
 		NextID         *int               `json:"next_id,omitempty"`
 		Requirements   *ctfd.Requirements `json:"requirements,omitempty"`
@@ -72,6 +73,7 @@ type (
 		Initial        *int    `json:"initial,omitempty"`
 		Decay          *int    `json:"decay,omitempty"`
 		Minimum        *int    `json:"minimum,omitempty"`
+		Logic          *string `json:"logic,omitempty"`
 		MaxAttempts    *int    `json:"max_attempts,omitempty"`
 		NextID         *int    `json:"next_id,omitempty"`
 		// Requirements can update the challenge's behavior and prerequisites i.e.
