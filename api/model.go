@@ -19,6 +19,7 @@ type (
 		Initial        *int               `json:"initial,omitempty"`
 		Decay          *int               `json:"decay,omitempty"`
 		Minimum        *int               `json:"minimum,omitempty"`
+		Logic          string             `json:"logic"`
 		Category       string             `json:"category"`
 		Type           string             `json:"type"`
 		TypeData       *ctfd.Type         `json:"type_data,omitempty"`
