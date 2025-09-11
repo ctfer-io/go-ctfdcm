@@ -57,7 +57,7 @@ func DeleteInstance(client *ctfd.Client, params *DeleteInstanceParams, opts ...c
 
 type GetAdminInstanceParams struct {
 	ChallengeID string `schema:"challengeId"`
-	SourceID    string `schema:"soureId"`
+	SourceID    string `schema:"sourceId"`
 }
 
 func GetAdminInstance(client *ctfd.Client, params *GetAdminInstanceParams, opts ...ctfd.Option) (*Instance, error) {
