@@ -1,10 +1,10 @@
 module github.com/ctfer-io/go-ctfdcm
 
-go 1.24.5
+go 1.25.4
 
 require (
 	github.com/ctfer-io/chall-manager v0.6.0
-	github.com/ctfer-io/go-ctfd v0.15.1
+	github.com/ctfer-io/go-ctfd v0.16.0
 	github.com/stretchr/testify v1.11.1
 )
 
