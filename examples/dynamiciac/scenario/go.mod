@@ -1,6 +1,6 @@
 module github.com/ctfer-io/go-ctfdcm/examples/dynamiciac/scenario
 
-go 1.24.5
+go 1.25.4
 
 require github.com/pulumi/pulumi/sdk/v3 v3.186.0
 
