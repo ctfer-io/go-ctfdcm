@@ -24,6 +24,7 @@ type (
 		Type           string             `json:"type"`
 		TypeData       *ctfd.Type         `json:"type_data,omitempty"`
 		State          string             `json:"state"`
+		Position       *int               `json:"position,omitempty"`
 		NextID         *int               `json:"next_id"`
 		Requirements   *ctfd.Requirements `json:"requirements"` // List of challenge IDs to complete before
 		Solves         int                `json:"solves"`

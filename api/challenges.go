@@ -34,6 +34,7 @@ type (
 		NextID         *int               `json:"next_id,omitempty"`
 		Requirements   *ctfd.Requirements `json:"requirements,omitempty"`
 		State          string             `json:"state"`
+		Position       *int               `json:"position,omitempty"`
 		Type           string             `json:"type"`
 
 		// CTFer.io DynamicIaC arguments
@@ -82,6 +83,7 @@ type (
 		// field requires you to do it manually through *Client.GetChallengeRequirements
 		Requirements *ctfd.Requirements `json:"requirements,omitempty"`
 		State        string             `json:"state"`
+		Position     *int               `json:"position,omitempty"`
 
 		// CTFer.io DynamicIaC arguments
 
