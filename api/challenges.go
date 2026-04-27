@@ -8,12 +8,13 @@ import (
 
 // GetChallenge return the challenge corresponding to the given id,
 // in the CTFd-Chall-Manager plugin datamodel.
-func GetChallenge(client *ctfd.Client, id string, opts ...ctfd.Option) (*Challenge, error) {
+func GetChallenge(client *ctfd.Client, id string, opts ...ctfd.Option) (*Challenge, *ctfd.MetaResponse, error) {
 	ch := &Challenge{}
-	if err := client.Get(fmt.Sprintf("/challenges/%s", id), nil, ch, opts...); err != nil {
-		return nil, err
+	meta, err := client.Get(fmt.Sprintf("/challenges/%s", id), nil, ch, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ch, nil
+	return ch, meta, nil
 }
 
 type (
@@ -52,12 +53,13 @@ type (
 )
 
 // PostChallenges creates a CTFd-Chall-Manager plugin challenge.
-func PostChallenges(client *ctfd.Client, params *PostChallengesParams, opts ...ctfd.Option) (*Challenge, error) {
+func PostChallenges(client *ctfd.Client, params *PostChallengesParams, opts ...ctfd.Option) (*Challenge, *ctfd.MetaResponse, error) {
 	ch := &Challenge{}
-	if err := client.Post("/challenges", params, ch, opts...); err != nil {
-		return nil, err
+	meta, err := client.Post("/challenges", params, ch, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ch, nil
+	return ch, meta, nil
 }
 
 type (
@@ -100,10 +102,11 @@ type (
 )
 
 // PatchChallenges updates a challenge configuration.
-func PatchChallenges(client *ctfd.Client, id string, params *PatchChallengeParams, opts ...ctfd.Option) (*Challenge, error) {
+func PatchChallenges(client *ctfd.Client, id string, params *PatchChallengeParams, opts ...ctfd.Option) (*Challenge, *ctfd.MetaResponse, error) {
 	ch := &Challenge{}
-	if err := client.Patch(fmt.Sprintf("/challenges/%s", id), params, ch, opts...); err != nil {
-		return nil, err
+	meta, err := client.Patch(fmt.Sprintf("/challenges/%s", id), params, ch, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ch, nil
+	return ch, meta, nil
 }

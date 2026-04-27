@@ -11,6 +11,6 @@ type (
 )
 
 // PatchConfigs handle the patch of CTFd-Chall-Manager configs.
-func PatchConfigs(client *ctfd.Client, params PatchConfigsParams, opts ...ctfd.Option) error {
+func PatchConfigs(client *ctfd.Client, params PatchConfigsParams, opts ...ctfd.Option) (*ctfd.MetaResponse, error) {
 	return client.Patch("/configs", params, nil, opts...)
 }

@@ -2,10 +2,11 @@ package api
 
 import ctfd "github.com/ctfer-io/go-ctfd/api"
 
-func GetMana(client *ctfd.Client, opts ...ctfd.Option) (*Mana, error) {
+func GetMana(client *ctfd.Client, opts ...ctfd.Option) (*Mana, *ctfd.MetaResponse, error) {
 	m := &Mana{}
-	if err := client.Get("/plugins/ctfd-chall-manager/mana", nil, m, opts...); err != nil {
-		return nil, err
+	meta, err := client.Get("/plugins/ctfd-chall-manager/mana", nil, m, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return m, nil
+	return m, meta, nil
 }
