@@ -25,7 +25,7 @@ func Test_F_Run(t *testing.T) {
 
 	t.Cleanup(func() {
 		// Due to relicas, forced to unpause the event elseway the test is not reproducible
-		_ = admin.PatchConfigs(&ctfd.PatchConfigsParams{
+		_, _ = admin.PatchConfigs(&ctfd.PatchConfigsParams{
 			Paused: ptr(false),
 		})
 
@@ -63,7 +63,7 @@ func Test_F_Run(t *testing.T) {
 	require.NoError(t, err)
 
 	// 1c. Create an API Key to avoid session/nonce+cookies dance
-	token, err := admin.PostTokens(&ctfd.PostTokensParams{
+	token, _, err := admin.PostTokens(&ctfd.PostTokensParams{
 		Expiration:  "2222-01-01",
 		Description: "Example API token.",
 	})
@@ -71,7 +71,7 @@ func Test_F_Run(t *testing.T) {
 	admin.SetAPIKey(*token.Value)
 
 	// 2. Create a DynamicIaC challenge
-	ch, err := api.PostChallenges(admin, &api.PostChallengesParams{
+	ch, _, err := api.PostChallenges(admin, &api.PostChallengesParams{
 		// CTFd
 		Name:           "Break The License 1/2",
 		Category:       "crypto",
@@ -96,18 +96,18 @@ func Test_F_Run(t *testing.T) {
 	require.NoError(t, err)
 
 	// 3. Pop up an instance
-	ist, err := api.PostInstance(admin, &api.PostInstanceParams{
+	ist, _, err := api.PostInstance(admin, &api.PostInstanceParams{
 		ChallengeID: strconv.Itoa(ch.ID),
 	})
 	require.NoError(t, err)
 	assert.NotEmpty(t, ist.ConnectionInfo)
 
 	// 4. Destroy the challenge
-	err = admin.DeleteChallenge(ch.ID)
+	_, err = admin.DeleteChallenge(ch.ID)
 	require.NoError(t, err)
 
 	// 5. Check the instance has been destroyed
-	ist, err = api.GetInstance(admin, &api.GetInstanceParams{
+	ist, _, err = api.GetInstance(admin, &api.GetInstanceParams{
 		ChallengeID: strconv.Itoa(ch.ID),
 	})
 	assert.Error(t, err) // challenge does not exist

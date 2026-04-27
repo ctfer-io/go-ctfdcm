@@ -29,7 +29,7 @@ func main() {
 	fmt.Printf("    Created scenario file %s\n", ref)
 
 	fmt.Println("[+] Creating dynamic_iac challenge")
-	ch, err := api.PostChallenges(cli, &api.PostChallengesParams{
+	ch, _, err := api.PostChallenges(cli, &api.PostChallengesParams{
 		// CTFd
 		Name:           "Break The License 1/2",
 		Category:       "crypto",

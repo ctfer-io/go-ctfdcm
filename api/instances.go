@@ -8,51 +8,55 @@ type GetInstanceParams struct {
 	ChallengeID string `schema:"challengeId"`
 }
 
-func GetInstance(client *ctfd.Client, params *GetInstanceParams, opts ...ctfd.Option) (*Instance, error) {
+func GetInstance(client *ctfd.Client, params *GetInstanceParams, opts ...ctfd.Option) (*Instance, *ctfd.MetaResponse, error) {
 	ist := &Instance{}
-	if err := client.Get("/plugins/ctfd-chall-manager/instance", params, ist, opts...); err != nil {
-		return nil, err
+	meta, err := client.Get("/plugins/ctfd-chall-manager/instance", params, ist, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ist, nil
+	return ist, meta, nil
 }
 
 type PostInstanceParams struct {
 	ChallengeID string `json:"challengeId"`
 }
 
-func PostInstance(client *ctfd.Client, params *PostInstanceParams, opts ...ctfd.Option) (*Instance, error) {
+func PostInstance(client *ctfd.Client, params *PostInstanceParams, opts ...ctfd.Option) (*Instance, *ctfd.MetaResponse, error) {
 	ist := &Instance{}
-	if err := client.Post("/plugins/ctfd-chall-manager/instance", params, ist, opts...); err != nil {
-		return nil, err
+	meta, err := client.Post("/plugins/ctfd-chall-manager/instance", params, ist, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ist, nil
+	return ist, meta, nil
 }
 
 type RenewInstanceParams struct {
 	ChallengeID string `json:"challengeId"`
 }
 
-func RenewInstance(client *ctfd.Client, params *RenewInstanceParams, opts ...ctfd.Option) (string, error) {
+func RenewInstance(client *ctfd.Client, params *RenewInstanceParams, opts ...ctfd.Option) (string, *ctfd.MetaResponse, error) {
 	type RenewResponse struct {
 		Message string `json:"message"`
 	}
 	resp := &RenewResponse{}
-	if err := client.Patch("/plugins/ctfd-chall-manager/instance", params, resp, opts...); err != nil {
-		return "", err
+	meta, err := client.Patch("/plugins/ctfd-chall-manager/instance", params, resp, opts...)
+	if err != nil {
+		return "", meta, err
 	}
-	return resp.Message, nil
+	return resp.Message, meta, nil
 }
 
 type DeleteInstanceParams struct {
 	ChallengeID string `json:"challengeId"`
 }
 
-func DeleteInstance(client *ctfd.Client, params *DeleteInstanceParams, opts ...ctfd.Option) (*Instance, error) {
+func DeleteInstance(client *ctfd.Client, params *DeleteInstanceParams, opts ...ctfd.Option) (*Instance, *ctfd.MetaResponse, error) {
 	ist := &Instance{}
-	if err := client.Delete("/plugins/ctfd-chall-manager/instance", params, ist, opts...); err != nil {
-		return nil, err
+	meta, err := client.Delete("/plugins/ctfd-chall-manager/instance", params, ist, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ist, nil
+	return ist, meta, nil
 }
 
 type GetAdminInstanceParams struct {
@@ -60,12 +64,13 @@ type GetAdminInstanceParams struct {
 	SourceID    string `schema:"sourceId"`
 }
 
-func GetAdminInstance(client *ctfd.Client, params *GetAdminInstanceParams, opts ...ctfd.Option) (*Instance, error) {
+func GetAdminInstance(client *ctfd.Client, params *GetAdminInstanceParams, opts ...ctfd.Option) (*Instance, *ctfd.MetaResponse, error) {
 	ist := &Instance{}
-	if err := client.Get("/plugins/ctfd-chall-manager/admin/instance", params, ist, opts...); err != nil {
-		return nil, err
+	meta, err := client.Get("/plugins/ctfd-chall-manager/admin/instance", params, ist, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ist, nil
+	return ist, meta, nil
 }
 
 type PostAdminInstanceParams struct {
@@ -73,12 +78,13 @@ type PostAdminInstanceParams struct {
 	SourceID    string `json:"sourceId"`
 }
 
-func PostAdminInstance(client *ctfd.Client, params *PostAdminInstanceParams, opts ...ctfd.Option) (*Instance, error) {
+func PostAdminInstance(client *ctfd.Client, params *PostAdminInstanceParams, opts ...ctfd.Option) (*Instance, *ctfd.MetaResponse, error) {
 	ist := &Instance{}
-	if err := client.Post("/plugins/ctfd-chall-manager/admin/instance", params, ist, opts...); err != nil {
-		return nil, err
+	meta, err := client.Post("/plugins/ctfd-chall-manager/admin/instance", params, ist, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ist, nil
+	return ist, meta, nil
 }
 
 type PatchAdminInstanceParams struct {
@@ -86,12 +92,13 @@ type PatchAdminInstanceParams struct {
 	SourceID    string `json:"sourceId"`
 }
 
-func PatchAdminInstance(client *ctfd.Client, params *PatchAdminInstanceParams, opts ...ctfd.Option) (*Instance, error) {
+func PatchAdminInstance(client *ctfd.Client, params *PatchAdminInstanceParams, opts ...ctfd.Option) (*Instance, *ctfd.MetaResponse, error) {
 	ist := &Instance{}
-	if err := client.Patch("/plugins/ctfd-chall-manager/admin/instance", params, ist, opts...); err != nil {
-		return nil, err
+	meta, err := client.Patch("/plugins/ctfd-chall-manager/admin/instance", params, ist, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ist, nil
+	return ist, meta, nil
 }
 
 type DeleteAdminInstanceParams struct {
@@ -99,10 +106,11 @@ type DeleteAdminInstanceParams struct {
 	SourceID    string `json:"sourceId"`
 }
 
-func DeleteAdminInstance(client *ctfd.Client, params *DeleteAdminInstanceParams, opts ...ctfd.Option) (*Instance, error) {
+func DeleteAdminInstance(client *ctfd.Client, params *DeleteAdminInstanceParams, opts ...ctfd.Option) (*Instance, *ctfd.MetaResponse, error) {
 	ist := &Instance{}
-	if err := client.Delete("/plugins/ctfd-chall-manager/admin/instance", params, ist, opts...); err != nil {
-		return nil, err
+	meta, err := client.Delete("/plugins/ctfd-chall-manager/admin/instance", params, ist, opts...)
+	if err != nil {
+		return nil, meta, err
 	}
-	return ist, nil
+	return ist, meta, nil
 }
