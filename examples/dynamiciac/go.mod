@@ -5,7 +5,7 @@ go 1.25.8
 replace github.com/ctfer-io/go-ctfdcm => ../../
 
 require (
-	github.com/ctfer-io/chall-manager v0.6.5
+	github.com/ctfer-io/chall-manager v0.6.6
 	github.com/ctfer-io/go-ctfd v0.18.0
 	github.com/ctfer-io/go-ctfdcm v0.0.0-00010101000000-000000000000
 )
