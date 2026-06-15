@@ -82,7 +82,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.24.0 // indirect
-	github.com/pulumi/pulumi/sdk/v3 v3.245.0 // indirect
+	github.com/pulumi/pulumi/sdk/v3 v3.246.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
